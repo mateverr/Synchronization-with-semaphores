@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
   for (i = 0; i < 10; i++) {
     // comment this out for no critical protection
-    if (!semaphore_p()) exit(EXIT_FAILURE);  // lock
+    // if (!semaphore_p()) exit(EXIT_FAILURE);  // lock
     printf("[%c", op_char);
     fflush(stdout);
     pause_time = rand() % 3;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 /* After the critical section, we call semaphore_v, setting the semaphore available, before going through the for loop again after a random wait. After the loop, the call to del_semvalue is made to clean up the code. */
 
     //comment this out for no critical protection
-    if (!semaphore_v()) exit(EXIT_FAILURE);  // unlock
+    // if (!semaphore_v()) exit(EXIT_FAILURE);  // unlock
 
     pause_time = rand() % 2;
     sleep(pause_time);
