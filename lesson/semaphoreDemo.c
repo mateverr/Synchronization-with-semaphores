@@ -9,12 +9,13 @@
 
 static int set_semvalue(void);
 static void del_semvalue(void);
-static int semaphore_p(void);
+static int semaphore_p(void); 
 static int semaphore_v(void);
  
 static int sem_id;
 
-union semun{
+union semun
+{
   int val;
   struct semid_ds *buf;
   unsigned short *array;
@@ -38,7 +39,8 @@ int main(int argc, char *argv[]) {
 /* Then we have a loop which enters and leaves the critical section ten times. There, we rst make a call to semaphore_p which sets the semaphore to wait, as this program is about to enter the critical section. */
 
   for (i = 0; i < 10; i++) {
-    if (!semaphore_p()) exit(EXIT_FAILURE);  // lock
+    // comment this out for no critical protection
+    // if (!semaphore_p()) exit(EXIT_FAILURE);  // lock
     printf("%c", op_char);
     fflush(stdout);
     pause_time = rand() % 3;
@@ -48,7 +50,8 @@ int main(int argc, char *argv[]) {
 
 /* After the critical section, we call semaphore_v, setting the semaphore available, before going through the for loop again after a random wait. After the loop, the call to del_semvalue is made to clean up the code. */
 
-    if (!semaphore_v()) exit(EXIT_FAILURE);  // unlock
+    //comment this out for no critical protection
+    // if (!semaphore_v()) exit(EXIT_FAILURE);  // unlock
 
     pause_time = rand() % 2;
     sleep(pause_time);
@@ -98,6 +101,7 @@ static int semaphore_v(void) {
   struct sembuf sem_b;
   sem_b.sem_num = 0;
   sem_b.sem_op = 1; /* V() */  // increment == unlock
+  // same as semaphore p but instead of -1 it is 1, which means unlock
   sem_b.sem_flg = SEM_UNDO;
   if (semop(sem_id, &sem_b, 1) == -1) {
     fprintf(stderr, "semaphore_v failed\n");
